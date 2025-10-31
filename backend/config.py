@@ -5,6 +5,9 @@ from jose import jwt, JWTError
 from dotenv import load_dotenv
 from fastapi import HTTPException, Depends
 from fastapi.security import OAuth2PasswordBearer
+from passlib.context import CryptContext
+
+pwd_ctx = CryptContext(schemes=["bcrypt_sha256"], deprecated="auto")
 
 # .env 로드
 load_dotenv()

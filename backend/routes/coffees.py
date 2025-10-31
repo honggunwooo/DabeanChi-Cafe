@@ -6,6 +6,13 @@ from typing import List, Optional
 from deps import get_db
 from config import get_current_user           # JWT 사용자 확인
 from schemas import CoffeeCreate, CoffeeUpdate, CoffeeOut
+from passlib.context import CryptContext
+
+
+pwd_ctx = CryptContext(
+    schemes=["bcrypt_sha256", "bcrypt"],
+    deprecated="auto"
+)
 
 router = APIRouter(prefix="/coffees", tags=["coffees"])
 

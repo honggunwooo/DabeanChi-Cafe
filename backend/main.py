@@ -31,6 +31,7 @@ app.add_middleware(
 )
 
 # 라우터 연결 
+app.include_router(auth_router)
 app.include_router(health_router, prefix="/api/health")
 app.include_router(auth_router, prefix="/api")
 app.include_router(profile_router, prefix="/api")
