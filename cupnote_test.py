@@ -16,7 +16,7 @@ feature_cols = ["roast", "origin", "location"]
 # 학습 당시 category 목록 저장
 # 학습 때 X_train[col].cat.categories.tolist()로 저장해둔 리스트 사용
 categories_dict = {
-    "roast": ["Light", "Medium", "Dark"],
+    "roast": ["Light", 'Medium-Light',"Medium", "Dark"],
     "origin": ["Ethiopia", "Colombia", "Brazil", "Kenya"],  # 예시
     "location": ["africa", "asia", "caribbean", "cent_america", "south_america"]
 }
