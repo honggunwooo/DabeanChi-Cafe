@@ -9,6 +9,8 @@ export default function Profile() {
   const [favorites, setFavorites] = useState([])
   const [favoriteBeans, setFavoriteBeans] = useState([])
   const [currentUser, setCurrentUser] = useState(null)
+  const [isEditingName, setIsEditingName] = useState(false)
+  const [editedName, setEditedName] = useState("")
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("currentUser") || "null")
@@ -18,6 +20,7 @@ export default function Profile() {
       return
     }
     setCurrentUser(user)
+    setEditedName(user.name)
 
     const beans = JSON.parse(localStorage.getItem("beans") || "[]")
     setMyBeans(beans)
@@ -28,6 +31,28 @@ export default function Profile() {
     const favBeans = beans.filter((bean) => favoriteIds.includes(bean.id))
     setFavoriteBeans(favBeans)
   }, [])
+
+  const handleProfileImageChange = (e) => {
+    const file = e.target.files[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        const updatedUser = { ...currentUser, profileImage: reader.result }
+        setCurrentUser(updatedUser)
+        localStorage.setItem("currentUser", JSON.stringify(updatedUser))
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const handleNameSave = () => {
+    if (editedName.trim()) {
+      const updatedUser = { ...currentUser, name: editedName }
+      setCurrentUser(updatedUser)
+      localStorage.setItem("currentUser", JSON.stringify(updatedUser))
+      setIsEditingName(false)
+    }
+  }
 
   const deleteBean = (beanId) => {
     if (confirm("정말 삭제하시겠습니까?")) {
@@ -62,9 +87,59 @@ export default function Profile() {
 
       <div className={styles.profileWrapper}>
         <div className={styles.profileHeader}>
-          <div className={styles.avatar}>👤</div>
-          <h1 className={styles.userName}>{currentUser.name}</h1>
-          <p className={styles.userEmail}>{currentUser.email}</p>
+          <label htmlFor="profileImageInput" className={styles.avatarLabel}>
+            <div className={styles.avatar}>
+              {currentUser.profileImage ? (
+                <img
+                  src={currentUser.profileImage || "/placeholder.svg"}
+                  alt="Profile"
+                  className={styles.avatarImage}
+                />
+              ) : (
+                "👤"
+              )}
+            </div>
+            <span className={styles.editHint}>사진 변경</span>
+          </label>
+          <input
+            id="profileImageInput"
+            type="file"
+            accept="image/*"
+            onChange={handleProfileImageChange}
+            className={styles.hiddenInput}
+          />
+
+          {isEditingName ? (
+            <div className={styles.editNameContainer}>
+              <input
+                type="text"
+                value={editedName}
+                onChange={(e) => setEditedName(e.target.value)}
+                className={styles.nameInput}
+                autoFocus
+              />
+              <button onClick={handleNameSave} className={styles.saveButton}>
+                저장
+              </button>
+              <button
+                onClick={() => {
+                  setIsEditingName(false)
+                  setEditedName(currentUser.name)
+                }}
+                className={styles.cancelButton}
+              >
+                취소
+              </button>
+            </div>
+          ) : (
+            <div>
+              <h1 className={styles.userName} onClick={() => setIsEditingName(true)}>
+                {currentUser.name}
+
+              </h1>
+              <p className={styles.userEmail}>{currentUser.email}</p>
+            </div>
+          )}
         </div>
 
         <div className={styles.tabs}>

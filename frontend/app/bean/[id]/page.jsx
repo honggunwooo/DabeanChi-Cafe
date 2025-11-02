@@ -34,6 +34,13 @@ export default function BeanDetail() {
   }
 
   const addToCart = () => {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser") || "null")
+    if (!currentUser) {
+      alert("장바구니에 추가하려면 로그인이 필요합니다.")
+      window.location.href = "/login"
+      return
+    }
+
     const cart = JSON.parse(localStorage.getItem("cart") || "[]")
     cart.push(bean)
     localStorage.setItem("cart", JSON.stringify(cart))
@@ -117,24 +124,6 @@ export default function BeanDetail() {
               <span className={styles.detailLabel}>중량</span>
               <span className={styles.detailValue}>{bean.weight}</span>
             </div>
-            {bean.region && (
-              <div className={styles.detailItem}>
-                <span className={styles.detailLabel}>재배 지역</span>
-                <span className={styles.detailValue}>{bean.region}</span>
-              </div>
-            )}
-            {bean.breed && (
-              <div className={styles.detailItem}>
-                <span className={styles.detailLabel}>품종</span>
-                <span className={styles.detailValue}>
-                  {bean.breed === 'Typica' ? '티피카' : 
-                   bean.breed === 'Bourbon' ? '버번' :
-                   bean.breed === 'Geisha' ? '게이샤' :
-                   bean.breed === 'Pacamara' ? '파카마라' :
-                   bean.breed === 'Catuai' ? '카투아이' : bean.breed}
-                </span>
-              </div>
-            )}
             {bean.location && (
               <div className={styles.detailItem}>
                 <span className={styles.detailLabel}>거래 지역</span>

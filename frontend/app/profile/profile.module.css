@@ -46,6 +46,13 @@
   margin-bottom: 2rem;
 }
 
+.avatarLabel {
+  cursor: pointer;
+  position: relative;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
 .avatar {
   width: 100px;
   height: 100px;
@@ -56,6 +63,41 @@
   justify-content: center;
   font-size: 3rem;
   margin: 0 auto 1rem;
+  transition: transform 0.3s;
+}
+
+.avatar:hover {
+  transform: scale(1.05);
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.editHint {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #3d2817;
+  color: #fff;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.avatarLabel:hover .editHint {
+  opacity: 1;
+}
+
+.hiddenInput {
+  display: none;
 }
 
 .userName {
@@ -63,11 +105,78 @@
   color: #3d2817;
   margin-bottom: 0.5rem;
   font-weight: 600;
+  position: relative;
+}
+
+.editIcon {
+  margin-left: 0.5rem;
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+
+.userName:hover .editIcon {
+  opacity: 1;
+}
+
+.userName:hover {
+  cursor: pointer;
+  color: #8b7355;
 }
 
 .userEmail {
   color: #8b7355;
   font-size: 1rem;
+}
+
+.editNameContainer {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.nameInput {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #3d2817;
+  border: 2px solid #d4b5a0;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  text-align: center;
+  font-family: inherit;
+}
+
+.saveButton {
+  background-color: #27ae60;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.saveButton:hover {
+  background-color: #229954;
+}
+
+.cancelButton {
+  background-color: #95a5a6;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.cancelButton:hover {
+  background-color: #7f8c8d;
 }
 
 .tabs {

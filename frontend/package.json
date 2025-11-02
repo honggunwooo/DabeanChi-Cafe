@@ -2,13 +2,12 @@
   "name": "my-v0-project",
   "version": "0.1.0",
   "private": true,
-    "type": "module",
+  "type": "module",
   "scripts": {
     "build": "next build",
     "dev": "next dev",
     "lint": "eslint .",
     "start": "next start"
-    
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -41,6 +40,7 @@
     "@radix-ui/react-tooltip": "1.1.6",
     "@vercel/analytics": "latest",
     "autoprefixer": "^10.4.20",
+    "axios": "^1.13.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "1.0.4",

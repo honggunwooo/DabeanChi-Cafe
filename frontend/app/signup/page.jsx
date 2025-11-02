@@ -1,7 +1,8 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import styles from "./signup.module.css"
+import { useState } from "react";
+import styles from "./signup.module.css";
+import axios from "axios";
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -10,49 +11,79 @@ export default function Signup() {
     password: "",
     confirmPassword: "",
     agreed: false,
-  })
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleInputChange = (e) => {
-    const { id, value, type, checked } = e.target
+    const { id, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
       [id]: type === "checkbox" ? checked : value,
-    }))
-  }
+    }));
+    setError("");
+  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
 
     if (formData.password !== formData.confirmPassword) {
-      alert("비밀번호가 일치하지 않습니다.")
-      return
+      alert("비밀번호가 일치하지 않습니다.");
+      return;
     }
 
     if (!formData.agreed) {
-      alert("이용약관에 동의해주세요.")
-      return
+      alert("이용약관에 동의해주세요.");
+      return;
     }
 
-    // localStorage에 사용자 정보 저장
-    const users = JSON.parse(localStorage.getItem("users") || "[]")
-    const newUser = {
-      id: Date.now(),
-      name: formData.name,
-      email: formData.email,
-      password: formData.password,
-      createdAt: new Date().toISOString(),
-    }
-    users.push(newUser)
-    localStorage.setItem("users", JSON.stringify(users))
+    setLoading(true);
 
-    alert("회원가입이 완료되었습니다!")
-    window.location.href = "/login"
-  }
+    try {
+      const response = await axios.post(
+        "https://e90481819453.ngrok-free.app/api/auth/register",
+        {
+          email: formData.email,
+          password: formData.password,
+          nickname: formData.name,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const users = JSON.parse(localStorage.getItem("users") || "[]");
+      const newUser = {
+        id: Date.now(),
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        createdAt: new Date().toISOString(),
+      };
+      users.push(newUser);
+      localStorage.setItem("users", JSON.stringify(users));
+
+      alert("회원가입이 완료되었습니다!");
+      window.location.href = "/login";
+    } catch (err) {
+      console.error("[v0] Signup error:", err);
+      const errorMessage =
+        err.response?.data?.detail ||
+        err.message ||
+        "회원가입 중 오류가 발생했습니다.";
+      setError(errorMessage);
+      alert(`회원가입 실패: ${errorMessage}`);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className={styles.container}>
       <div className={styles.formWrapper}>
-        {/* 홈으로 돌아가기 버튼 추가 */}
         <a href="/" className={styles.backButton}>
           ← 홈으로 돌아가기
         </a>
@@ -67,6 +98,18 @@ export default function Signup() {
         <div className={styles.formContainer}>
           <h1 className={styles.title}>회원가입</h1>
           <p className={styles.subtitle}>DabeanChi와 함께 시작하세요</p>
+
+          {error && (
+            <div
+              style={{
+                color: "#d32f2f",
+                marginBottom: "15px",
+                textAlign: "center",
+              }}
+            >
+              {error}
+            </div>
+          )}
 
           <form className={styles.form} onSubmit={handleSubmit}>
             <div className={styles.inputGroup}>
@@ -143,8 +186,12 @@ export default function Signup() {
               </label>
             </div>
 
-            <button type="submit" className={styles.submitButton}>
-              가입하기
+            <button
+              type="submit"
+              className={styles.submitButton}
+              disabled={loading}
+            >
+              {loading ? "가입중..." : "가입하기"}
             </button>
           </form>
 
@@ -161,5 +208,5 @@ export default function Signup() {
         </div>
       </div>
     </div>
-  )
+  );
 }

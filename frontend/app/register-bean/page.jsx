@@ -13,6 +13,7 @@ export default function RegisterBean() {
     roastLevel: "",
     elevation: "",
     weight: "",
+    method: "",
     price: "",
     description: ""
   })
@@ -187,6 +188,25 @@ export default function RegisterBean() {
                 <option value="light-medium">라이트미디움</option>
                 <option value="medium">미디엄</option>
                 <option value="dark">다크</option>
+              </select>
+            </div>
+
+            <div className={styles.inputGroup}>
+              <label htmlFor="method" className={styles.label}>
+                가공방식 *
+              </label>
+              <select
+                id="method"
+                name="method"
+                className={styles.select}
+                value={formData.method}
+                onChange={handleInputChange}
+                required
+              >
+                <option value="">선택하세요</option>
+                <option value="Natural">내추럴</option>
+                <option value="Washed">워시드</option>
+                <option value="Etc">기타</option>
               </select>
             </div>
 

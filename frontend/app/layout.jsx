@@ -10,7 +10,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="ko">
-      <body>
+      <body suppressHydrationWarning={true}>
         {children}
         <Analytics />
       </body>
