@@ -8,11 +8,13 @@ export default function RegisterBean() {
   const [formData, setFormData] = useState({
     beanName: "",
     origin: "",
+    region: "",
+    breed: "",
     roastLevel: "",
+    elevation: "",
     weight: "",
     price: "",
-    description: "",
-    location: "",
+    description: ""
   })
 
   const handleImageChange = (e) => {
@@ -27,11 +29,12 @@ export default function RegisterBean() {
   }
 
   const handleInputChange = (e) => {
-    const { id, value } = e.target
+    const { name, id, value } = e.target;
+    const fieldName = name || id; // name 속성이 없으면 id 속성 사용
     setFormData((prev) => ({
       ...prev,
-      [id]: value,
-    }))
+      [fieldName]: value,
+    }));
   }
 
   const handleSubmit = (e) => {
@@ -110,15 +113,62 @@ export default function RegisterBean() {
               <label htmlFor="origin" className={styles.label}>
                 원산지 *
               </label>
-              <input
-                type="text"
-                id="origin"
-                className={styles.input}
-                placeholder="예: 에티오피아"
+              <select
+                name="origin"
                 value={formData.origin}
                 onChange={handleInputChange}
+                className={styles.select}
                 required
-              />
+              >
+                <option value="">선택하세요</option>
+                <option value="Ethiopia">에티오피아</option>
+                <option value="Phanama">파나마</option>
+                <option value="America">아메리카</option>
+                <option value="Brazil">브라질</option>
+                <option value="Colombia">콜롬비아</option>
+                <option value="Kenya">케냐</option>
+                <option value="africa">아프리카</option>
+              </select>
+            </div>
+
+            <div className={styles.inputGroup}>
+              <label htmlFor="region" className={styles.label}>
+                재배 지역 *
+              </label>
+              <select
+                name="region"
+                value={formData.region}
+                onChange={handleInputChange}
+                className={styles.select}
+                required
+              >
+                <option value="">선택하세요</option>
+                <option value="africa">아프리카</option>
+                <option value="asia">아시아</option>
+                <option value="caribben">카리브 제도</option>
+                <option value="center-america">중앙 아메리카</option>
+                <option value="south-america">남아메리카</option>
+              </select>
+            </div>
+
+            <div className={styles.inputGroup}>
+              <label htmlFor="breed" className={styles.label}>
+                품종 *
+              </label>
+              <select
+                name="breed"
+                value={formData.breed}
+                onChange={handleInputChange}
+                className={styles.select}
+                required
+              >
+                <option value="">선택하세요</option>
+                <option value="Typica">티피카</option>
+                <option value="Bourbon">버번</option>
+                <option value="Geisha">게이샤</option>
+                <option value="Pacamara">파카마라</option>
+                <option value="Catuai">카투아이</option>
+              </select>
             </div>
 
             <div className={styles.inputGroup}>
@@ -138,6 +188,21 @@ export default function RegisterBean() {
                 <option value="medium">미디엄</option>
                 <option value="dark">다크</option>
               </select>
+            </div>
+
+            <div className={styles.inputGroup}>
+              <label htmlFor="Elevation" className={styles.label}>
+                고도 *
+              </label>
+              <input
+                type="text"
+                id="elevation"
+                className={styles.input}
+                placeholder="예: 1000m"
+                value={formData.elevation}
+                onChange={handleInputChange}
+                required
+              />
             </div>
 
             <div className={styles.inputGroup}>
@@ -167,20 +232,6 @@ export default function RegisterBean() {
                 value={formData.price}
                 onChange={handleInputChange}
                 required
-              />
-            </div>
-
-            <div className={styles.inputGroup}>
-              <label htmlFor="location" className={styles.label}>
-                거래 지역
-              </label>
-              <input
-                type="text"
-                id="location"
-                className={styles.input}
-                placeholder="예: 서울 강남구"
-                value={formData.location}
-                onChange={handleInputChange}
               />
             </div>
           </div>
