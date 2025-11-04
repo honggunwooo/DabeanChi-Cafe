@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
-import deps
+from deps import get_db
 from sqlalchemy import text
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
