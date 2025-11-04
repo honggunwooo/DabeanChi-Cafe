@@ -1,8 +1,8 @@
 # routes/favorites.py
 from fastapi import APIRouter, Depends, HTTPException, Path, Query
 from sqlalchemy import text
-from database import get_db
-from config import get_current_user   # 토큰 → 사용자
+from backend.database import get_db
+from backend.config import get_current_user   # 토큰 → 사용자
 
 router = APIRouter(prefix="/api/favorites", tags=["favorites"])
 

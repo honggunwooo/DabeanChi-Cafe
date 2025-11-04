@@ -1,20 +1,21 @@
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from deps import get_db
+
+from backend.deps import get_db
 from sqlalchemy import text
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 import os
 
 # 라우터 import
-from routes.health import router as health_router
-from routes.auth import router as auth_router
-from routes.profile import router as profile_router
-from routes.coffees import router as coffees_router
-from routes.recommend import router as recommend_router
-from routes.analyze import router as analyze_router
-from routes.favorites import router as favorites_router
-from routes.uploads import router as upload_router
+from backend.routes.health import router as health_router
+from backend.routes.auth import router as auth_router
+from backend.routes.profile import router as profile_router
+from backend.routes.coffees import router as coffees_router
+from backend.routes.recommend import router as recommend_router
+from backend.routes.analyze import router as analyze_router
+from backend.routes.favorites import router as favorites_router
+from backend.routes.uploads import router as upload_router
 
 
 app = FastAPI(

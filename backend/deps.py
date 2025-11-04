@@ -2,9 +2,9 @@
 from fastapi import Depends, HTTPException, Request
 from sqlalchemy import text
 from types import SimpleNamespace
-import jwt
+from jose import jwt
 
-from config import settings, get_db  # get_db는 config.py에 있어야 함
+from backend.config import settings, get_db  # get_db는 config.py에 있어야 함
 
 def get_current_user(request: Request, db=Depends(get_db)):
     """

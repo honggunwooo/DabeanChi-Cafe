@@ -6,8 +6,8 @@ from fastapi import HTTPException, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from passlib.context import CryptContext
 from sqlalchemy import text
-from database import get_db
-from schemas import UserOut
+from backend.database import get_db
+from backend.schemas import UserOut
 
 # 비밀번호 해시 설정: bcrypt 72바이트 제한 회피용으로 bcrypt_sha256 사용
 pwd_ctx = CryptContext(schemes=["bcrypt_sha256"], deprecated="auto")
