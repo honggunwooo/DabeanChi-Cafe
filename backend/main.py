@@ -31,30 +31,30 @@ UPLOADS_DIR = STATIC_DIR / "uploads"
 STATIC_DIR.mkdir(parents=True, exist_ok=True)
 UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
 
-
-# === CORS ===
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],       # 배포 시 프론트 주소로 변경
+    allow_origins=["http://localhost:3000"],        
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["*"],        
+    allow_headers=["*"],        
 )
-
-
 
 app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
-app.include_router(auth_router, prefix="/api/auth", tags=["auth"])
-app.include_router(coffees_router)
-app.include_router(upload_router, prefix="/api/upload")
+
+# === Routers ===
+# 각 라우터는 파일 내에서 prefix를 선언했다고 가정하고, 여기서는 한 번만 include 합니다.
 app.include_router(health_router)
-app.include_router(auth_router)
+app.include_router(auth_router, prefix="/api/auth", tags=["auth"])  
+app.include_router(auth_router) 
 app.include_router(profile_router)
-app.include_router(recommend_router)
-app.include_router(analyze_router)
+app.include_router(coffees_router)
 app.include_router(favorites_router)
-app.include_router(upload_router)
+app.include_router(upload_router, prefix="/api/upload")  
+app.include_router(upload_router)  
+app.include_router(analyze_router)
+app.include_router(recommend_router)
+
 
 
 @app.get("/api/debug/static")
@@ -84,7 +84,3 @@ def db_test(db = Depends(get_db)):
 @app.get("/api/debug/routes")
 def debug_routes():
     return {"routes": [f"{r.path} [{','.join(r.methods or [])}]" for r in app.routes]}
-
-@app.get("/")
-def root():
-    return {"message": "server ok"}
