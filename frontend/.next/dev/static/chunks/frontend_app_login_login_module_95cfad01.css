@@ -1,0 +1,211 @@
+/* [project]/frontend/app/login/login.module.css [app-client] (css) */
+.login-module__pFsjvG__container {
+  background: linear-gradient(135deg, #faf8f5 0%, #f5f0eb 100%);
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
+  display: flex;
+}
+
+.login-module__pFsjvG__formWrapper {
+  width: 100%;
+  max-width: 450px;
+}
+
+.login-module__pFsjvG__backButton {
+  color: #5c4a3a;
+  align-items: center;
+  gap: .5rem;
+  margin-bottom: 1rem;
+  font-size: .9rem;
+  text-decoration: none;
+  transition: color .3s;
+  display: inline-flex;
+}
+
+.login-module__pFsjvG__backButton:hover {
+  color: #3d2817;
+}
+
+.login-module__pFsjvG__logoSection {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.login-module__pFsjvG__logo {
+  color: #3d2817;
+  margin-bottom: .5rem;
+  font-size: 2rem;
+  font-style: italic;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.login-module__pFsjvG__logoSubtext {
+  color: #5c4a3a;
+  font-size: .9rem;
+}
+
+.login-module__pFsjvG__formContainer {
+  background-color: #fff;
+  border-radius: 16px;
+  padding: 3rem;
+  box-shadow: 0 4px 20px #3d28171a;
+}
+
+.login-module__pFsjvG__title {
+  color: #3d2817;
+  margin-bottom: .5rem;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.login-module__pFsjvG__subtitle {
+  color: #5c4a3a;
+  margin-bottom: 2rem;
+  font-size: .95rem;
+}
+
+.login-module__pFsjvG__form {
+  flex-direction: column;
+  gap: 1.5rem;
+  display: flex;
+}
+
+.login-module__pFsjvG__inputGroup {
+  flex-direction: column;
+  gap: .5rem;
+  display: flex;
+}
+
+.login-module__pFsjvG__label {
+  color: #3d2817;
+  font-size: .9rem;
+  font-weight: 500;
+}
+
+.login-module__pFsjvG__input {
+  background-color: #faf8f5;
+  border: 2px solid #e8e4df;
+  border-radius: 8px;
+  padding: .9rem 1rem;
+  font-size: 1rem;
+  transition: border-color .3s;
+}
+
+.login-module__pFsjvG__input:focus {
+  background-color: #fff;
+  border-color: #d4b5a0;
+  outline: none;
+}
+
+.login-module__pFsjvG__options {
+  justify-content: space-between;
+  align-items: center;
+  font-size: .85rem;
+  display: flex;
+}
+
+.login-module__pFsjvG__checkboxLabel {
+  color: #5c4a3a;
+  cursor: pointer;
+  align-items: center;
+  gap: .5rem;
+  display: flex;
+}
+
+.login-module__pFsjvG__checkbox {
+  cursor: pointer;
+}
+
+.login-module__pFsjvG__forgotPassword {
+  color: #8b7355;
+  text-decoration: none;
+  transition: color .3s;
+}
+
+.login-module__pFsjvG__forgotPassword:hover {
+  color: #3d2817;
+}
+
+.login-module__pFsjvG__submitButton {
+  color: #fff;
+  cursor: pointer;
+  background-color: #3d2817;
+  border: none;
+  border-radius: 8px;
+  margin-top: .5rem;
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background-color .3s, transform .3s;
+}
+
+.login-module__pFsjvG__submitButton:hover {
+  background-color: #2a1a0f;
+  transform: translateY(-2px);
+}
+
+.login-module__pFsjvG__divider {
+  text-align: center;
+  margin: 2rem 0;
+  position: relative;
+}
+
+.login-module__pFsjvG__divider:before {
+  content: "";
+  background-color: #e8e4df;
+  height: 1px;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+}
+
+.login-module__pFsjvG__dividerText {
+  color: #8b7355;
+  background-color: #fff;
+  padding: 0 1rem;
+  font-size: .85rem;
+  position: relative;
+}
+
+.login-module__pFsjvG__signupSection {
+  text-align: center;
+}
+
+.login-module__pFsjvG__signupText {
+  color: #5c4a3a;
+  margin-bottom: 1rem;
+  font-size: .95rem;
+}
+
+.login-module__pFsjvG__signupButton {
+  color: #3d2817;
+  background-color: #d4b5a0;
+  border-radius: 8px;
+  padding: .8rem 2rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color .3s, transform .3s;
+  display: inline-block;
+}
+
+.login-module__pFsjvG__signupButton:hover {
+  background-color: #c9a88a;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .login-module__pFsjvG__formContainer {
+    padding: 2rem;
+  }
+
+  .login-module__pFsjvG__title {
+    font-size: 1.6rem;
+  }
+}
+
+/*# sourceMappingURL=frontend_app_login_login_module_95cfad01.css.map*/
