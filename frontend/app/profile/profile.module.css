@@ -1,0 +1,237 @@
+.container {
+  min-height: 100vh;
+  background-color: #faf8f5;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 3rem;
+  background-color: #fff;
+  border-bottom: 1px solid #e8e4df;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #3d2817;
+  font-style: italic;
+  text-decoration: none;
+}
+
+.backButton {
+  color: #5c4a3a;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.3s;
+}
+
+.backButton:hover {
+  color: #3d2817;
+}
+
+.profileWrapper {
+  max-width: 1200px;
+  margin: 3rem auto;
+  padding: 0 3rem;
+}
+
+.profileHeader {
+  text-align: center;
+  padding: 3rem;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(61, 40, 23, 0.08);
+  margin-bottom: 2rem;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  background-color: #d4b5a0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  margin: 0 auto 1rem;
+}
+
+.userName {
+  font-size: 2rem;
+  color: #3d2817;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.userEmail {
+  color: #8b7355;
+  font-size: 1rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #e8e4df;
+}
+
+.tab {
+  background: none;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  color: #8b7355;
+  cursor: pointer;
+  transition: all 0.3s;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+}
+
+.tab:hover {
+  color: #3d2817;
+}
+
+.activeTab {
+  color: #3d2817;
+  font-weight: 600;
+  border-bottom-color: #3d2817;
+}
+
+.content {
+  min-height: 400px;
+}
+
+.beansGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.beanCard {
+  background-color: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(61, 40, 23, 0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+}
+
+.beanCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(61, 40, 23, 0.15);
+}
+
+.beanLink {
+  text-decoration: none;
+  color: inherit;
+  flex: 1;
+}
+
+.beanImageWrapper {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background-color: #f5f0eb;
+}
+
+.beanImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.beanInfo {
+  padding: 1.5rem;
+}
+
+.beanName {
+  font-size: 1.2rem;
+  color: #3d2817;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.beanOrigin {
+  font-size: 0.9rem;
+  color: #8b7355;
+  margin-bottom: 0.8rem;
+}
+
+.beanPrice {
+  font-size: 1.3rem;
+  color: #3d2817;
+  font-weight: 700;
+}
+
+.deleteButton {
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 0.8rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.deleteButton:hover {
+  background-color: #c0392b;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 4rem 2rem;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(61, 40, 23, 0.08);
+  grid-column: 1 / -1;
+}
+
+.emptyText {
+  font-size: 1.3rem;
+  color: #3d2817;
+  margin-bottom: 2rem;
+  font-weight: 600;
+}
+
+.registerButton {
+  background-color: #d4b5a0;
+  color: #3d2817;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background-color 0.3s, transform 0.3s;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.registerButton:hover {
+  background-color: #c9a88a;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .profileWrapper {
+    padding: 0 1.5rem;
+  }
+
+  .tabs {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .tab {
+    padding: 1rem;
+    text-align: left;
+  }
+
+  .beansGrid {
+    grid-template-columns: 1fr;
+  }
+}
