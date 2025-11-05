@@ -1,0 +1,26 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Mac system files
+.DS_Store
+
+# Database credentials / environment
+.env
+
+# Byte-compiled / temporary files
+*.swp
+*.tmp
+
+__pycache__/
+.venv/
+env/
+venv/
+.DS_Store
+.env
+node_modules/
