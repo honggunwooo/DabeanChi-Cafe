@@ -1,5 +1,7 @@
 "use client"
 
+// 아니 이거 page.jsx인데 왜 use client 사용중? page.client.tsx로 나눠야지
+
 import { useState } from "react"
 import styles from "./login.module.css"
 
