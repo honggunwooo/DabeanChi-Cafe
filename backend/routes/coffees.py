@@ -10,7 +10,7 @@ import joblib
 import pandas as pd
 import numpy
 from joblib import load
-from backend.deps import get_db, get_current_user
+from deps import get_db, get_current_user
 
 
 router = APIRouter(prefix="/api/coffee", tags=["coffee"])
@@ -378,8 +378,12 @@ def create_coffee(
                 pred_acid = res.get("acid")
                 pred_sweet = res.get("sweet")
                 pred_body = res.get("body")
-        except Exception:
+                print(res)
+        except Exception in e:
+            print(e)
             pred_acid = pred_sweet = pred_body = None
+
+        print(pred_acid, pred_body, pred_sweet)
 
         # choose values
         chosen = {

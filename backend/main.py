@@ -1,21 +1,21 @@
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.deps import get_db
+from deps import get_db
 from sqlalchemy import text
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 import os
 
 # 라우터 import
-from backend.routes.health import router as health_router
-from backend.routes.auth import router as auth_router
-from backend.routes.profile import router as profile_router
-from backend.routes.coffees import router as coffees_router
-from backend.routes.recommend import router as recommend_router
-from backend.routes.analyze import router as analyze_router
-from backend.routes.favorites import router as favorites_router
-from backend.routes.uploads import router as upload_router
+from routes.health import router as health_router
+from routes.auth import router as auth_router
+from routes.profile import router as profile_router
+from routes.coffees import router as coffees_router
+from routes.recommend import router as recommend_router
+from routes.analyze import router as analyze_router
+from routes.favorites import router as favorites_router
+from routes.uploads import router as upload_router
 
 
 app = FastAPI(
@@ -46,7 +46,6 @@ app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 # === Routers ===
 # 각 라우터는 파일 내에서 prefix를 선언했다고 가정하고, 여기서는 한 번만 include 합니다.
 app.include_router(health_router)
-app.include_router(auth_router, prefix="/api/auth", tags=["auth"])  
 app.include_router(auth_router) 
 app.include_router(profile_router)
 app.include_router(coffees_router)
