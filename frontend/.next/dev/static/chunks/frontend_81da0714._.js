@@ -53,6 +53,7 @@ __turbopack_context__.s([
     "default",
     ()=>RecommendationButton
 ]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = /*#__PURE__*/ __turbopack_context__.i("[project]/frontend/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/frontend/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/frontend/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/frontend/node_modules/next/navigation.js [app-client] (ecmascript)");
@@ -66,8 +67,12 @@ var _s = __turbopack_context__.k.signature();
 function RecommendationButton() {
     _s();
     const router = (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"])();
+    const apiBase = (__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].env.NEXT_PUBLIC_API_BASE_URL || "http://127.0.0.1:8000").replace(/\/$/, "");
+    const recommendUrl = `${apiBase}/api/coffee/recommend`;
+    const optionsUrl = `${apiBase}/api/coffee/options`;
     const [showOptions, setShowOptions] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [isLoading, setIsLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [cupnoteOptions, setCupnoteOptions] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     const [preferences, setPreferences] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])({
         limit: 10,
         offset: 0,
@@ -76,6 +81,37 @@ function RecommendationButton() {
         body: 5,
         cupnote: 'fruity' // Flavor note
     });
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "RecommendationButton.useEffect": ()=>{
+            const loadOptions = {
+                "RecommendationButton.useEffect.loadOptions": async ()=>{
+                    try {
+                        const { data } = await __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(optionsUrl);
+                        const notes = Array.isArray(data?.cupnote) ? data.cupnote : [];
+                        setCupnoteOptions(notes);
+                        if (notes.length > 0) {
+                            setPreferences({
+                                "RecommendationButton.useEffect.loadOptions": (prev)=>{
+                                    if (!prev.cupnote || !notes.includes(prev.cupnote)) {
+                                        return {
+                                            ...prev,
+                                            cupnote: notes[0]
+                                        };
+                                    }
+                                    return prev;
+                                }
+                            }["RecommendationButton.useEffect.loadOptions"]);
+                        }
+                    } catch (err) {
+                        console.warn("Failed to load cupnote options", err);
+                    }
+                }
+            }["RecommendationButton.useEffect.loadOptions"];
+            loadOptions();
+        }
+    }["RecommendationButton.useEffect"], [
+        optionsUrl
+    ]);
     const handleOptionSelect = ()=>{
         setShowOptions(true);
     };
@@ -84,16 +120,30 @@ function RecommendationButton() {
             setIsLoading(true);
             // Prepare request body with specific fields for the backend
             const requestBody = {
-                acid: preferences.acid,
-                sweet: preferences.sweet,
-                body: preferences.body,
-                cupnote: preferences.cupnote
+                acid: Math.round(preferences.acid) || 0,
+                aicd: Math.round(preferences.acid) || 0,
+                sweet: Math.round(preferences.sweet) || 0,
+                body: Math.round(preferences.body) || 0,
+                cupnote: preferences.cupnote && [
+                    "berry",
+                    "chocolate",
+                    "floral",
+                    "fruit"
+                ].includes(preferences.cupnote) ? preferences.cupnote : cupnoteOptions.find((c)=>[
+                        "berry",
+                        "chocolate",
+                        "floral",
+                        "fruit"
+                    ].includes(c)) || [
+                    "berry",
+                    "chocolate",
+                    "floral",
+                    "fruit"
+                ][0]
             };
             console.log('Sending request with body:', requestBody);
-            const response = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"])({
-                method: 'post',
-                url: 'https://ef6e92c5c7f4.ngrok-free.app/api/coffee/recommend',
-                data: requestBody,
+            sessionStorage.setItem('recommendationRequest', JSON.stringify(requestBody));
+            const response = await __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].post(recommendUrl, requestBody, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -111,12 +161,13 @@ function RecommendationButton() {
         } catch (error) {
             console.error('Error in handleRecommendation:', {
                 error: error,
-                message: error.message,
-                response: error.response?.data,
-                status: error.response?.status,
-                stack: error.stack
+                message: error?.message,
+                response: error?.response?.data,
+                status: error?.response?.status,
+                stack: error?.stack
             });
-            const errorMessage = error.response?.data?.message || error.message || '요청 처리 중 오류가 발생했습니다.';
+            const respData = error?.response?.data;
+            const errorMessage = error?.response?.data?.message || (typeof respData === "string" ? respData : JSON.stringify(respData)) || error?.message || '요청 처리 중 오류가 발생했습니다.';
             alert(`오류가 발생했습니다: ${errorMessage}`);
         } finally{
             setIsLoading(false);
@@ -139,7 +190,7 @@ function RecommendationButton() {
                 children: "추천받기"
             }, void 0, false, {
                 fileName: "[project]/frontend/Button/RecommendationButton.jsx",
-                lineNumber: 81,
+                lineNumber: 117,
                 columnNumber: 7
             }, this),
             showOptions && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -160,7 +211,7 @@ function RecommendationButton() {
                         children: "커피 취향을 선택하세요"
                     }, void 0, false, {
                         fileName: "[project]/frontend/Button/RecommendationButton.jsx",
-                        lineNumber: 110,
+                        lineNumber: 146,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -179,7 +230,7 @@ function RecommendationButton() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/frontend/Button/RecommendationButton.jsx",
-                                lineNumber: 113,
+                                lineNumber: 149,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -197,13 +248,13 @@ function RecommendationButton() {
                                 }
                             }, void 0, false, {
                                 fileName: "[project]/frontend/Button/RecommendationButton.jsx",
-                                lineNumber: 114,
+                                lineNumber: 150,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/frontend/Button/RecommendationButton.jsx",
-                        lineNumber: 112,
+                        lineNumber: 148,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -222,7 +273,7 @@ function RecommendationButton() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/frontend/Button/RecommendationButton.jsx",
-                                lineNumber: 126,
+                                lineNumber: 162,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -240,13 +291,13 @@ function RecommendationButton() {
                                 }
                             }, void 0, false, {
                                 fileName: "[project]/frontend/Button/RecommendationButton.jsx",
-                                lineNumber: 127,
+                                lineNumber: 163,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/frontend/Button/RecommendationButton.jsx",
-                        lineNumber: 125,
+                        lineNumber: 161,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -265,7 +316,7 @@ function RecommendationButton() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/frontend/Button/RecommendationButton.jsx",
-                                lineNumber: 139,
+                                lineNumber: 175,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -283,13 +334,13 @@ function RecommendationButton() {
                                 }
                             }, void 0, false, {
                                 fileName: "[project]/frontend/Button/RecommendationButton.jsx",
-                                lineNumber: 140,
+                                lineNumber: 176,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/frontend/Button/RecommendationButton.jsx",
-                        lineNumber: 138,
+                        lineNumber: 174,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -305,7 +356,7 @@ function RecommendationButton() {
                                 children: "향 선택"
                             }, void 0, false, {
                                 fileName: "[project]/frontend/Button/RecommendationButton.jsx",
-                                lineNumber: 152,
+                                lineNumber: 188,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
@@ -325,7 +376,7 @@ function RecommendationButton() {
                                         children: "fruit"
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/Button/RecommendationButton.jsx",
-                                        lineNumber: 158,
+                                        lineNumber: 194,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -333,7 +384,7 @@ function RecommendationButton() {
                                         children: "berry"
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/Button/RecommendationButton.jsx",
-                                        lineNumber: 159,
+                                        lineNumber: 195,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -341,7 +392,7 @@ function RecommendationButton() {
                                         children: "chocolate"
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/Button/RecommendationButton.jsx",
-                                        lineNumber: 160,
+                                        lineNumber: 196,
                                         columnNumber: 15
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
@@ -349,19 +400,19 @@ function RecommendationButton() {
                                         children: "floral"
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/Button/RecommendationButton.jsx",
-                                        lineNumber: 161,
+                                        lineNumber: 197,
                                         columnNumber: 15
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/frontend/Button/RecommendationButton.jsx",
-                                lineNumber: 153,
+                                lineNumber: 189,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/frontend/Button/RecommendationButton.jsx",
-                        lineNumber: 151,
+                        lineNumber: 187,
                         columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -383,7 +434,7 @@ function RecommendationButton() {
                                 children: "취소"
                             }, void 0, false, {
                                 fileName: "[project]/frontend/Button/RecommendationButton.jsx",
-                                lineNumber: 166,
+                                lineNumber: 202,
                                 columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -401,25 +452,25 @@ function RecommendationButton() {
                                 children: isLoading ? 'Loading...' : '추천받기'
                             }, void 0, false, {
                                 fileName: "[project]/frontend/Button/RecommendationButton.jsx",
-                                lineNumber: 179,
+                                lineNumber: 215,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/frontend/Button/RecommendationButton.jsx",
-                        lineNumber: 165,
+                        lineNumber: 201,
                         columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/frontend/Button/RecommendationButton.jsx",
-                lineNumber: 98,
+                lineNumber: 134,
                 columnNumber: 9
             }, this)
         ]
     }, void 0, true);
 }
-_s(RecommendationButton, "VSPne5y0loDUsZd9C6nh2w2JC1k=", false, function() {
+_s(RecommendationButton, "m65YFTwCjWZ29YPDDPYKKCSa93c=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"]
     ];
@@ -438,8 +489,10 @@ __turbopack_context__.s([
     "default",
     ()=>Home
 ]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = /*#__PURE__*/ __turbopack_context__.i("[project]/frontend/node_modules/next/dist/build/polyfills/process.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/frontend/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/frontend/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/frontend/node_modules/axios/lib/axios.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$app$2f$styles$2f$home$2e$module$2e$css__$5b$app$2d$client$5d$__$28$css__module$29$__ = __turbopack_context__.i("[project]/frontend/app/styles/home.module.css [app-client] (css module)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$Button$2f$RecommendationButton$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/frontend/Button/RecommendationButton.jsx [app-client] (ecmascript)");
 ;
@@ -448,8 +501,17 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
+;
 function Home() {
     _s();
+    const safeParse = (value, fallback)=>{
+        try {
+            if (value === null || value === undefined) return fallback;
+            return JSON.parse(value);
+        } catch  {
+            return fallback;
+        }
+    };
     const [beans, setBeans] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     const [filteredBeans, setFilteredBeans] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     const [searchTerm, setSearchTerm] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
@@ -460,19 +522,52 @@ function Home() {
     const [cartCount, setCartCount] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(0);
     const [showFilters, setShowFilters] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [currentUser, setCurrentUser] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
+    const apiBase = (__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$build$2f$polyfills$2f$process$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].env.NEXT_PUBLIC_API_BASE_URL || "http://127.0.0.1:8000").replace(/\/$/, "");
+    const ensureAbsoluteUrl = (path)=>{
+        if (!path) return undefined;
+        if (path.startsWith("http://") || path.startsWith("https://")) return path;
+        return `${apiBase}${path.startsWith("/") ? "" : "/"}${path}`;
+    };
+    const mapCoffeeToBean = (item)=>({
+            id: item.id,
+            beanName: item.name,
+            origin: item.country,
+            region: item.region,
+            roastLevel: item.roast_level,
+            weight: item.weight_grams ? `${item.weight_grams}g` : "",
+            price: item.price_krw?.toString() ?? "",
+            description: item.description,
+            image: ensureAbsoluteUrl(item.image_url || item.image),
+            createdAt: item.created_at || item.createdAt || new Date().toISOString()
+        });
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "Home.useEffect": ()=>{
-            const storedBeans = JSON.parse(localStorage.getItem("beans") || "[]");
-            setBeans(storedBeans);
-            setFilteredBeans(storedBeans);
-            const storedFavorites = JSON.parse(localStorage.getItem("favorites") || "[]");
-            setFavorites(storedFavorites);
-            const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-            setCartCount(cart.length);
-            const user = JSON.parse(localStorage.getItem("currentUser") || "null");
-            setCurrentUser(user);
+            const init = {
+                "Home.useEffect.init": async ()=>{
+                    try {
+                        const { data } = await __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$axios$2f$lib$2f$axios$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"].get(`${apiBase}/api/coffee/`);
+                        const mapped = Array.isArray(data) ? data.map(mapCoffeeToBean) : [];
+                        setBeans(mapped);
+                        setFilteredBeans(mapped);
+                        localStorage.setItem("beans", JSON.stringify(mapped));
+                    } catch  {
+                        const storedBeans = safeParse(localStorage.getItem("beans"), []);
+                        setBeans(storedBeans);
+                        setFilteredBeans(storedBeans);
+                    }
+                    const storedFavorites = safeParse(localStorage.getItem("favorites"), []);
+                    setFavorites(storedFavorites);
+                    const cart = safeParse(localStorage.getItem("cart"), []);
+                    setCartCount(cart.length);
+                    const user = safeParse(localStorage.getItem("currentUser"), null);
+                    setCurrentUser(user);
+                }
+            }["Home.useEffect.init"];
+            init();
         }
-    }["Home.useEffect"], []);
+    }["Home.useEffect"], [
+        apiBase
+    ]);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "Home.useEffect": ()=>{
             let result = [
@@ -541,9 +636,10 @@ function Home() {
     const handleLogout = ()=>{
         localStorage.removeItem("currentUser");
         setCurrentUser(null);
-        alert("로그아웃되었습니다.");
+        alert("성공 로그아웃되었습니다.");
         window.location.href = "/";
     };
+    //a
     const origins = [
         ...new Set(beans.map((bean)=>bean.origin))
     ].filter(Boolean);
@@ -558,8 +654,8 @@ function Home() {
                         children: "DabeanChi"
                     }, void 0, false, {
                         fileName: "[project]/frontend/app/page.jsx",
-                        lineNumber: 97,
-                        columnNumber: 9
+                        lineNumber: 151,
+                        columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("nav", {
                         className: __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$app$2f$styles$2f$home$2e$module$2e$css__$5b$app$2d$client$5d$__$28$css__module$29$__["default"].nav,
@@ -570,8 +666,8 @@ function Home() {
                                 children: "홈"
                             }, void 0, false, {
                                 fileName: "[project]/frontend/app/page.jsx",
-                                lineNumber: 99,
-                                columnNumber: 11
+                                lineNumber: 153,
+                                columnNumber: 13
                             }, this),
                             currentUser ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
                                 children: [
@@ -581,8 +677,8 @@ function Home() {
                                         children: "프로필"
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/app/page.jsx",
-                                        lineNumber: 104,
-                                        columnNumber: 15
+                                        lineNumber: 158,
+                                        columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
                                         href: "/cart",
@@ -594,8 +690,8 @@ function Home() {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/frontend/app/page.jsx",
-                                        lineNumber: 107,
-                                        columnNumber: 15
+                                        lineNumber: 161,
+                                        columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                         onClick: handleLogout,
@@ -603,13 +699,13 @@ function Home() {
                                         children: "로그아웃"
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/app/page.jsx",
-                                        lineNumber: 110,
-                                        columnNumber: 15
+                                        lineNumber: 164,
+                                        columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$Button$2f$RecommendationButton$2e$jsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
                                         fileName: "[project]/frontend/app/page.jsx",
-                                        lineNumber: 113,
-                                        columnNumber: 15
+                                        lineNumber: 167,
+                                        columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -624,8 +720,8 @@ function Home() {
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/frontend/app/page.jsx",
-                                        lineNumber: 117,
-                                        columnNumber: 15
+                                        lineNumber: 171,
+                                        columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
                                         href: "/login",
@@ -633,22 +729,22 @@ function Home() {
                                         children: "로그인"
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/app/page.jsx",
-                                        lineNumber: 120,
-                                        columnNumber: 15
+                                        lineNumber: 174,
+                                        columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/frontend/app/page.jsx",
-                        lineNumber: 98,
-                        columnNumber: 9
+                        lineNumber: 152,
+                        columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/frontend/app/page.jsx",
-                lineNumber: 96,
-                columnNumber: 7
+                lineNumber: 150,
+                columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
                 className: __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$app$2f$styles$2f$home$2e$module$2e$css__$5b$app$2d$client$5d$__$28$css__module$29$__["default"].hero,
@@ -658,16 +754,16 @@ function Home() {
                         children: "당신의 원두를 공유하세요"
                     }, void 0, false, {
                         fileName: "[project]/frontend/app/page.jsx",
-                        lineNumber: 129,
-                        columnNumber: 9
+                        lineNumber: 183,
+                        columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                         className: __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$app$2f$styles$2f$home$2e$module$2e$css__$5b$app$2d$client$5d$__$28$css__module$29$__["default"].heroSubtitle,
                         children: "직접 로스팅한 원두를 판매하고, 특별한 원두를 발견하세요"
                     }, void 0, false, {
                         fileName: "[project]/frontend/app/page.jsx",
-                        lineNumber: 130,
-                        columnNumber: 9
+                        lineNumber: 184,
+                        columnNumber: 11
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
                         href: "/register-bean",
@@ -675,14 +771,14 @@ function Home() {
                         children: "원두 등록하기"
                     }, void 0, false, {
                         fileName: "[project]/frontend/app/page.jsx",
-                        lineNumber: 131,
-                        columnNumber: 9
+                        lineNumber: 187,
+                        columnNumber: 11
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/frontend/app/page.jsx",
-                lineNumber: 128,
-                columnNumber: 7
+                lineNumber: 182,
+                columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
                 className: __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$app$2f$styles$2f$home$2e$module$2e$css__$5b$app$2d$client$5d$__$28$css__module$29$__["default"].searchSection,
@@ -698,8 +794,8 @@ function Home() {
                                 onChange: (e)=>setSearchTerm(e.target.value)
                             }, void 0, false, {
                                 fileName: "[project]/frontend/app/page.jsx",
-                                lineNumber: 138,
-                                columnNumber: 11
+                                lineNumber: 194,
+                                columnNumber: 13
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                 className: __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$app$2f$styles$2f$home$2e$module$2e$css__$5b$app$2d$client$5d$__$28$css__module$29$__["default"].filterToggle,
@@ -710,14 +806,14 @@ function Home() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/frontend/app/page.jsx",
-                                lineNumber: 145,
-                                columnNumber: 11
+                                lineNumber: 201,
+                                columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/frontend/app/page.jsx",
-                        lineNumber: 137,
-                        columnNumber: 9
+                        lineNumber: 193,
+                        columnNumber: 11
                     }, this),
                     showFilters && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$app$2f$styles$2f$home$2e$module$2e$css__$5b$app$2d$client$5d$__$28$css__module$29$__["default"].filterContainer,
@@ -732,22 +828,22 @@ function Home() {
                                         children: "모든 원산지"
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/app/page.jsx",
-                                        lineNumber: 157,
-                                        columnNumber: 15
+                                        lineNumber: 216,
+                                        columnNumber: 17
                                     }, this),
                                     origins.map((origin)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
                                             value: origin,
                                             children: origin
                                         }, origin, false, {
                                             fileName: "[project]/frontend/app/page.jsx",
-                                            lineNumber: 159,
-                                            columnNumber: 17
+                                            lineNumber: 218,
+                                            columnNumber: 19
                                         }, this))
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/frontend/app/page.jsx",
-                                lineNumber: 152,
-                                columnNumber: 13
+                                lineNumber: 211,
+                                columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
                                 className: __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$app$2f$styles$2f$home$2e$module$2e$css__$5b$app$2d$client$5d$__$28$css__module$29$__["default"].filterSelect,
@@ -759,38 +855,38 @@ function Home() {
                                         children: "모든 로스팅"
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/app/page.jsx",
-                                        lineNumber: 170,
-                                        columnNumber: 15
+                                        lineNumber: 229,
+                                        columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
                                         value: "light",
                                         children: "라이트 로스트"
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/app/page.jsx",
-                                        lineNumber: 171,
-                                        columnNumber: 15
+                                        lineNumber: 230,
+                                        columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
                                         value: "medium",
                                         children: "미디엄 로스트"
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/app/page.jsx",
-                                        lineNumber: 172,
-                                        columnNumber: 15
+                                        lineNumber: 231,
+                                        columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
                                         value: "dark",
                                         children: "다크 로스트"
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/app/page.jsx",
-                                        lineNumber: 173,
-                                        columnNumber: 15
+                                        lineNumber: 232,
+                                        columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/frontend/app/page.jsx",
-                                lineNumber: 165,
-                                columnNumber: 13
+                                lineNumber: 224,
+                                columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
                                 className: __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$app$2f$styles$2f$home$2e$module$2e$css__$5b$app$2d$client$5d$__$28$css__module$29$__["default"].filterSelect,
@@ -802,38 +898,38 @@ function Home() {
                                         children: "최신순"
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/app/page.jsx",
-                                        lineNumber: 177,
-                                        columnNumber: 15
+                                        lineNumber: 240,
+                                        columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
                                         value: "price-low",
                                         children: "가격 낮은순"
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/app/page.jsx",
-                                        lineNumber: 178,
-                                        columnNumber: 15
+                                        lineNumber: 241,
+                                        columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
                                         value: "price-high",
                                         children: "가격 높은순"
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/app/page.jsx",
-                                        lineNumber: 179,
-                                        columnNumber: 15
+                                        lineNumber: 242,
+                                        columnNumber: 17
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
                                         value: "popular",
                                         children: "인기순"
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/app/page.jsx",
-                                        lineNumber: 180,
-                                        columnNumber: 15
+                                        lineNumber: 243,
+                                        columnNumber: 17
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/frontend/app/page.jsx",
-                                lineNumber: 176,
-                                columnNumber: 13
+                                lineNumber: 235,
+                                columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                 className: __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$app$2f$styles$2f$home$2e$module$2e$css__$5b$app$2d$client$5d$__$28$css__module$29$__["default"].resetButton,
@@ -846,20 +942,20 @@ function Home() {
                                 children: "초기화"
                             }, void 0, false, {
                                 fileName: "[project]/frontend/app/page.jsx",
-                                lineNumber: 183,
-                                columnNumber: 13
+                                lineNumber: 246,
+                                columnNumber: 15
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/frontend/app/page.jsx",
-                        lineNumber: 151,
-                        columnNumber: 11
+                        lineNumber: 210,
+                        columnNumber: 13
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/frontend/app/page.jsx",
-                lineNumber: 136,
-                columnNumber: 7
+                lineNumber: 192,
+                columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
                 id: "products",
@@ -869,14 +965,15 @@ function Home() {
                         className: __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$app$2f$styles$2f$home$2e$module$2e$css__$5b$app$2d$client$5d$__$28$css__module$29$__["default"].sectionTitle,
                         children: [
                             searchTerm || filterOrigin || filterRoast ? "검색 결과" : "최근 등록된 원두",
-                            " (",
+                            " ",
+                            "(",
                             filteredBeans.length,
                             ")"
                         ]
                     }, void 0, true, {
                         fileName: "[project]/frontend/app/page.jsx",
-                        lineNumber: 199,
-                        columnNumber: 9
+                        lineNumber: 262,
+                        columnNumber: 11
                     }, this),
                     filteredBeans.length === 0 ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$app$2f$styles$2f$home$2e$module$2e$css__$5b$app$2d$client$5d$__$28$css__module$29$__["default"].emptyState,
@@ -886,16 +983,16 @@ function Home() {
                                 children: beans.length === 0 ? "아직 등록된 원두가 없습니다" : "검색 결과가 없습니다"
                             }, void 0, false, {
                                 fileName: "[project]/frontend/app/page.jsx",
-                                lineNumber: 204,
-                                columnNumber: 13
+                                lineNumber: 270,
+                                columnNumber: 15
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                 className: __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$app$2f$styles$2f$home$2e$module$2e$css__$5b$app$2d$client$5d$__$28$css__module$29$__["default"].emptySubtext,
                                 children: beans.length === 0 ? "첫 번째로 원두를 등록해보세요!" : "다른 검색어로 시도해보세요"
                             }, void 0, false, {
                                 fileName: "[project]/frontend/app/page.jsx",
-                                lineNumber: 207,
-                                columnNumber: 13
+                                lineNumber: 275,
+                                columnNumber: 15
                             }, this),
                             beans.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
                                 href: "/register-bean",
@@ -903,14 +1000,14 @@ function Home() {
                                 children: "원두 등록하기"
                             }, void 0, false, {
                                 fileName: "[project]/frontend/app/page.jsx",
-                                lineNumber: 211,
-                                columnNumber: 15
+                                lineNumber: 281,
+                                columnNumber: 17
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/frontend/app/page.jsx",
-                        lineNumber: 203,
-                        columnNumber: 11
+                        lineNumber: 269,
+                        columnNumber: 13
                     }, this) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$app$2f$styles$2f$home$2e$module$2e$css__$5b$app$2d$client$5d$__$28$css__module$29$__["default"].productsGrid,
                         children: filteredBeans.map((bean)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -925,8 +1022,8 @@ function Home() {
                                         children: favorites.includes(bean.id) ? "❤️" : "🤍"
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/app/page.jsx",
-                                        lineNumber: 220,
-                                        columnNumber: 17
+                                        lineNumber: 290,
+                                        columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
                                         href: `/bean/${bean.id}`,
@@ -940,13 +1037,13 @@ function Home() {
                                                     className: __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$app$2f$styles$2f$home$2e$module$2e$css__$5b$app$2d$client$5d$__$28$css__module$29$__["default"].productImage
                                                 }, void 0, false, {
                                                     fileName: "[project]/frontend/app/page.jsx",
-                                                    lineNumber: 233,
-                                                    columnNumber: 23
+                                                    lineNumber: 303,
+                                                    columnNumber: 25
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/frontend/app/page.jsx",
-                                                lineNumber: 232,
-                                                columnNumber: 21
+                                                lineNumber: 302,
+                                                columnNumber: 23
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                                 className: __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$app$2f$styles$2f$home$2e$module$2e$css__$5b$app$2d$client$5d$__$28$css__module$29$__["default"].productInfo,
@@ -956,16 +1053,16 @@ function Home() {
                                                         children: bean.beanName
                                                     }, void 0, false, {
                                                         fileName: "[project]/frontend/app/page.jsx",
-                                                        lineNumber: 237,
-                                                        columnNumber: 21
+                                                        lineNumber: 311,
+                                                        columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                         className: __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$app$2f$styles$2f$home$2e$module$2e$css__$5b$app$2d$client$5d$__$28$css__module$29$__["default"].productOrigin,
                                                         children: bean.origin
                                                     }, void 0, false, {
                                                         fileName: "[project]/frontend/app/page.jsx",
-                                                        lineNumber: 238,
-                                                        columnNumber: 21
+                                                        lineNumber: 312,
+                                                        columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                         className: __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$app$2f$styles$2f$home$2e$module$2e$css__$5b$app$2d$client$5d$__$28$css__module$29$__["default"].productDetails,
@@ -977,8 +1074,8 @@ function Home() {
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/frontend/app/page.jsx",
-                                                        lineNumber: 239,
-                                                        columnNumber: 21
+                                                        lineNumber: 313,
+                                                        columnNumber: 23
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                         className: __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$app$2f$styles$2f$home$2e$module$2e$css__$5b$app$2d$client$5d$__$28$css__module$29$__["default"].productPrice,
@@ -988,8 +1085,8 @@ function Home() {
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/frontend/app/page.jsx",
-                                                        lineNumber: 247,
-                                                        columnNumber: 21
+                                                        lineNumber: 321,
+                                                        columnNumber: 23
                                                     }, this),
                                                     bean.location && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                                         className: __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$app$2f$styles$2f$home$2e$module$2e$css__$5b$app$2d$client$5d$__$28$css__module$29$__["default"].productLocation,
@@ -999,20 +1096,20 @@ function Home() {
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/frontend/app/page.jsx",
-                                                        lineNumber: 248,
-                                                        columnNumber: 39
+                                                        lineNumber: 325,
+                                                        columnNumber: 25
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/frontend/app/page.jsx",
-                                                lineNumber: 236,
-                                                columnNumber: 19
+                                                lineNumber: 310,
+                                                columnNumber: 21
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/frontend/app/page.jsx",
-                                        lineNumber: 230,
-                                        columnNumber: 17
+                                        lineNumber: 300,
+                                        columnNumber: 19
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                         className: __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$app$2f$styles$2f$home$2e$module$2e$css__$5b$app$2d$client$5d$__$28$css__module$29$__["default"].addToCartButton,
@@ -1023,25 +1120,25 @@ function Home() {
                                         children: "장바구니 담기"
                                     }, void 0, false, {
                                         fileName: "[project]/frontend/app/page.jsx",
-                                        lineNumber: 252,
-                                        columnNumber: 17
+                                        lineNumber: 332,
+                                        columnNumber: 19
                                     }, this)
                                 ]
                             }, bean.id, true, {
                                 fileName: "[project]/frontend/app/page.jsx",
-                                lineNumber: 219,
-                                columnNumber: 15
+                                lineNumber: 289,
+                                columnNumber: 17
                             }, this))
                     }, void 0, false, {
                         fileName: "[project]/frontend/app/page.jsx",
-                        lineNumber: 217,
-                        columnNumber: 11
+                        lineNumber: 287,
+                        columnNumber: 13
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/frontend/app/page.jsx",
-                lineNumber: 198,
-                columnNumber: 7
+                lineNumber: 261,
+                columnNumber: 9
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("footer", {
                 className: __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$app$2f$styles$2f$home$2e$module$2e$css__$5b$app$2d$client$5d$__$28$css__module$29$__["default"].footer,
@@ -1053,33 +1150,33 @@ function Home() {
                             children: "© 2025 DabeanChi. 원두 거래 플랫폼"
                         }, void 0, false, {
                             fileName: "[project]/frontend/app/page.jsx",
-                            lineNumber: 269,
-                            columnNumber: 11
+                            lineNumber: 349,
+                            columnNumber: 13
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                             className: __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$app$2f$styles$2f$home$2e$module$2e$css__$5b$app$2d$client$5d$__$28$css__module$29$__["default"].footerText,
                             children: "문의: dcpop28201004@gmail.com"
                         }, void 0, false, {
                             fileName: "[project]/frontend/app/page.jsx",
-                            lineNumber: 270,
-                            columnNumber: 11
+                            lineNumber: 352,
+                            columnNumber: 13
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/frontend/app/page.jsx",
-                    lineNumber: 268,
-                    columnNumber: 9
+                    lineNumber: 348,
+                    columnNumber: 11
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/frontend/app/page.jsx",
-                lineNumber: 267,
-                columnNumber: 7
+                lineNumber: 347,
+                columnNumber: 9
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/frontend/app/page.jsx",
-        lineNumber: 95,
-        columnNumber: 5
+        lineNumber: 149,
+        columnNumber: 7
     }, this);
 }
 _s(Home, "Gse14KnIOsk1xAWcXOWpgmxzSeI=");

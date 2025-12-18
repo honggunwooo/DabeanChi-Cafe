@@ -1,14 +1,23 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import axios from 'axios'
 
 
 export default function RecommendationButton() {
   const router = useRouter()
+  const apiBase =
+    (process.env.NEXT_PUBLIC_API_BASE_URL || "http://127.0.0.1:8000").replace(
+      /\/$/,
+      ""
+    )
+  const recommendUrl = `${apiBase}/api/coffee/recommend`
+  const optionsUrl = `${apiBase}/api/coffee/options`
+
   const [showOptions, setShowOptions] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [cupnoteOptions, setCupnoteOptions] = useState([])
   const [preferences, setPreferences] = useState({
     limit: 10,      // Number of recommendations
     offset: 0,      // For pagination
@@ -17,6 +26,27 @@ export default function RecommendationButton() {
     body: 5,        // Body (0-10)
     cupnote: 'fruity' // Flavor note
   })
+
+  useEffect(() => {
+    const loadOptions = async () => {
+      try {
+        const { data } = await axios.get(optionsUrl)
+        const notes = Array.isArray(data?.cupnote) ? data.cupnote : []
+        setCupnoteOptions(notes)
+        if (notes.length > 0) {
+          setPreferences((prev) => {
+            if (!prev.cupnote || !notes.includes(prev.cupnote)) {
+              return { ...prev, cupnote: notes[0] }
+            }
+            return prev
+          })
+        }
+      } catch (err) {
+        console.warn("Failed to load cupnote options", err)
+      }
+    }
+    loadOptions()
+  }, [optionsUrl])
 
   const handleOptionSelect = () => {
     setShowOptions(true)
@@ -28,18 +58,22 @@ export default function RecommendationButton() {
       
       // Prepare request body with specific fields for the backend
       const requestBody = {
-        acid: preferences.acid,
-        sweet: preferences.sweet,
-        body: preferences.body,
-        cupnote: preferences.cupnote,
+        acid: Math.round(preferences.acid) || 0,
+        aicd: Math.round(preferences.acid) || 0, // 백엔드 스키마에 맞춰 중복 필드 포함
+        sweet: Math.round(preferences.sweet) || 0,
+        body: Math.round(preferences.body) || 0,
+        cupnote:
+          preferences.cupnote && ["berry", "chocolate", "floral", "fruit"].includes(preferences.cupnote)
+            ? preferences.cupnote
+            : (cupnoteOptions.find((c) => ["berry", "chocolate", "floral", "fruit"].includes(c)) ||
+               ["berry", "chocolate", "floral", "fruit"][0]),
       }
 
       console.log('Sending request with body:', requestBody);
 
-      const response = await axios({
-        method: 'post',
-        url: 'https://ef6e92c5c7f4.ngrok-free.app/api/coffee/recommend',
-        data: requestBody,
+      sessionStorage.setItem('recommendationRequest', JSON.stringify(requestBody))
+
+      const response = await axios.post(recommendUrl, requestBody, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -60,14 +94,16 @@ export default function RecommendationButton() {
     } catch (error) {
       console.error('Error in handleRecommendation:', {
         error: error,
-        message: error.message,
-        response: error.response?.data,
-        status: error.response?.status,
-        stack: error.stack
+        message: error?.message,
+        response: error?.response?.data,
+        status: error?.response?.status,
+        stack: error?.stack
       });
       
-      const errorMessage = error.response?.data?.message || 
-                         error.message || 
+      const respData = error?.response?.data
+      const errorMessage = error?.response?.data?.message || 
+                         (typeof respData === "string" ? respData : JSON.stringify(respData)) || 
+                         error?.message || 
                          '요청 처리 중 오류가 발생했습니다.';
       alert(`오류가 발생했습니다: ${errorMessage}`);
     } finally {

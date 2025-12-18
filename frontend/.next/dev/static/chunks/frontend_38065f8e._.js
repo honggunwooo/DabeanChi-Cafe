@@ -45,6 +45,7 @@ var _s = __turbopack_context__.k.signature();
 "use client";
 ;
 ;
+;
 function Profile() {
     _s();
     const [activeTab, setActiveTab] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("myBeans");
@@ -54,6 +55,27 @@ function Profile() {
     const [currentUser, setCurrentUser] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(null);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "Profile.useEffect": ()=>{
+            // const token = localStorage.getItem("token")
+            // if (!token) {
+            //   alert("로그인이 필요합니다.")
+            //   window.location.href = "/login"
+            //   return
+            // }
+            // (async () => {
+            //   try {
+            //     //프로필 불러오기
+            //     const {data} = await axios.get("http://127.0.0.1:8000/profile", {
+            //       headers: {Authorization : `Bearer ${token}`},
+            //     })
+            //     setCurrentUser(data)
+            //   }
+            //   catch(err) {
+            //     alert("세션이 만료되었습니다. 다시 로그인 해주세요.")
+            //     localStorage.removeItem("token")
+            //     localStorage.removeItem("currentUser")
+            //     window.location.href = "/login"
+            //   }
+            // })()
             const user = JSON.parse(localStorage.getItem("currentUser") || "null");
             if (!user) {
                 alert("로그인이 필요합니다.");
@@ -100,7 +122,7 @@ function Profile() {
                         children: "DabeanChi"
                     }, void 0, false, {
                         fileName: "[project]/frontend/app/profile/page.jsx",
-                        lineNumber: 55,
+                        lineNumber: 78,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
@@ -109,13 +131,13 @@ function Profile() {
                         children: "← 홈으로"
                     }, void 0, false, {
                         fileName: "[project]/frontend/app/profile/page.jsx",
-                        lineNumber: 58,
+                        lineNumber: 81,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/frontend/app/profile/page.jsx",
-                lineNumber: 54,
+                lineNumber: 77,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -129,7 +151,7 @@ function Profile() {
                                 children: "👤"
                             }, void 0, false, {
                                 fileName: "[project]/frontend/app/profile/page.jsx",
-                                lineNumber: 65,
+                                lineNumber: 88,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
@@ -137,7 +159,7 @@ function Profile() {
                                 children: currentUser.name
                             }, void 0, false, {
                                 fileName: "[project]/frontend/app/profile/page.jsx",
-                                lineNumber: 66,
+                                lineNumber: 89,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -145,13 +167,13 @@ function Profile() {
                                 children: currentUser.email
                             }, void 0, false, {
                                 fileName: "[project]/frontend/app/profile/page.jsx",
-                                lineNumber: 67,
+                                lineNumber: 90,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/frontend/app/profile/page.jsx",
-                        lineNumber: 64,
+                        lineNumber: 87,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -167,7 +189,7 @@ function Profile() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/frontend/app/profile/page.jsx",
-                                lineNumber: 71,
+                                lineNumber: 94,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -180,13 +202,13 @@ function Profile() {
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/frontend/app/profile/page.jsx",
-                                lineNumber: 77,
+                                lineNumber: 100,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/frontend/app/profile/page.jsx",
-                        lineNumber: 70,
+                        lineNumber: 93,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -202,7 +224,7 @@ function Profile() {
                                             children: "등록한 원두가 없습니다"
                                         }, void 0, false, {
                                             fileName: "[project]/frontend/app/profile/page.jsx",
-                                            lineNumber: 90,
+                                            lineNumber: 113,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
@@ -211,13 +233,13 @@ function Profile() {
                                             children: "원두 등록하기"
                                         }, void 0, false, {
                                             fileName: "[project]/frontend/app/profile/page.jsx",
-                                            lineNumber: 91,
+                                            lineNumber: 114,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/frontend/app/profile/page.jsx",
-                                    lineNumber: 89,
+                                    lineNumber: 112,
                                     columnNumber: 17
                                 }, this) : myBeans.map((bean)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$app$2f$profile$2f$profile$2e$module$2e$css__$5b$app$2d$client$5d$__$28$css__module$29$__["default"].beanCard,
@@ -234,12 +256,12 @@ function Profile() {
                                                             className: __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$app$2f$profile$2f$profile$2e$module$2e$css__$5b$app$2d$client$5d$__$28$css__module$29$__["default"].beanImage
                                                         }, void 0, false, {
                                                             fileName: "[project]/frontend/app/profile/page.jsx",
-                                                            lineNumber: 101,
+                                                            lineNumber: 124,
                                                             columnNumber: 27
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/frontend/app/profile/page.jsx",
-                                                        lineNumber: 100,
+                                                        lineNumber: 123,
                                                         columnNumber: 25
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -250,7 +272,7 @@ function Profile() {
                                                                 children: bean.beanName
                                                             }, void 0, false, {
                                                                 fileName: "[project]/frontend/app/profile/page.jsx",
-                                                                lineNumber: 109,
+                                                                lineNumber: 132,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -258,7 +280,7 @@ function Profile() {
                                                                 children: bean.origin
                                                             }, void 0, false, {
                                                                 fileName: "[project]/frontend/app/profile/page.jsx",
-                                                                lineNumber: 110,
+                                                                lineNumber: 133,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -269,19 +291,19 @@ function Profile() {
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/frontend/app/profile/page.jsx",
-                                                                lineNumber: 111,
+                                                                lineNumber: 134,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/frontend/app/profile/page.jsx",
-                                                        lineNumber: 108,
+                                                        lineNumber: 131,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/frontend/app/profile/page.jsx",
-                                                lineNumber: 98,
+                                                lineNumber: 121,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -290,18 +312,18 @@ function Profile() {
                                                 children: "삭제"
                                             }, void 0, false, {
                                                 fileName: "[project]/frontend/app/profile/page.jsx",
-                                                lineNumber: 114,
+                                                lineNumber: 137,
                                                 columnNumber: 21
                                             }, this)
                                         ]
                                     }, bean.id, true, {
                                         fileName: "[project]/frontend/app/profile/page.jsx",
-                                        lineNumber: 97,
+                                        lineNumber: 120,
                                         columnNumber: 19
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/frontend/app/profile/page.jsx",
-                                lineNumber: 87,
+                                lineNumber: 110,
                                 columnNumber: 13
                             }, this),
                             activeTab === "favorites" && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -314,7 +336,7 @@ function Profile() {
                                             children: "찜한 원두가 없습니다"
                                         }, void 0, false, {
                                             fileName: "[project]/frontend/app/profile/page.jsx",
-                                            lineNumber: 127,
+                                            lineNumber: 150,
                                             columnNumber: 19
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
@@ -323,13 +345,13 @@ function Profile() {
                                             children: "원두 둘러보기"
                                         }, void 0, false, {
                                             fileName: "[project]/frontend/app/profile/page.jsx",
-                                            lineNumber: 128,
+                                            lineNumber: 151,
                                             columnNumber: 19
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/frontend/app/profile/page.jsx",
-                                    lineNumber: 126,
+                                    lineNumber: 149,
                                     columnNumber: 17
                                 }, this) : favoriteBeans.map((bean)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                         className: __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$app$2f$profile$2f$profile$2e$module$2e$css__$5b$app$2d$client$5d$__$28$css__module$29$__["default"].beanCard,
@@ -346,12 +368,12 @@ function Profile() {
                                                             className: __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$app$2f$profile$2f$profile$2e$module$2e$css__$5b$app$2d$client$5d$__$28$css__module$29$__["default"].beanImage
                                                         }, void 0, false, {
                                                             fileName: "[project]/frontend/app/profile/page.jsx",
-                                                            lineNumber: 138,
+                                                            lineNumber: 161,
                                                             columnNumber: 27
                                                         }, this)
                                                     }, void 0, false, {
                                                         fileName: "[project]/frontend/app/profile/page.jsx",
-                                                        lineNumber: 137,
+                                                        lineNumber: 160,
                                                         columnNumber: 25
                                                     }, this),
                                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -362,7 +384,7 @@ function Profile() {
                                                                 children: bean.beanName
                                                             }, void 0, false, {
                                                                 fileName: "[project]/frontend/app/profile/page.jsx",
-                                                                lineNumber: 146,
+                                                                lineNumber: 169,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -370,7 +392,7 @@ function Profile() {
                                                                 children: bean.origin
                                                             }, void 0, false, {
                                                                 fileName: "[project]/frontend/app/profile/page.jsx",
-                                                                lineNumber: 147,
+                                                                lineNumber: 170,
                                                                 columnNumber: 25
                                                             }, this),
                                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
@@ -381,19 +403,19 @@ function Profile() {
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/frontend/app/profile/page.jsx",
-                                                                lineNumber: 148,
+                                                                lineNumber: 171,
                                                                 columnNumber: 25
                                                             }, this)
                                                         ]
                                                     }, void 0, true, {
                                                         fileName: "[project]/frontend/app/profile/page.jsx",
-                                                        lineNumber: 145,
+                                                        lineNumber: 168,
                                                         columnNumber: 23
                                                     }, this)
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/frontend/app/profile/page.jsx",
-                                                lineNumber: 135,
+                                                lineNumber: 158,
                                                 columnNumber: 21
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$frontend$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -402,36 +424,36 @@ function Profile() {
                                                 children: "찜 해제"
                                             }, void 0, false, {
                                                 fileName: "[project]/frontend/app/profile/page.jsx",
-                                                lineNumber: 151,
+                                                lineNumber: 174,
                                                 columnNumber: 21
                                             }, this)
                                         ]
                                     }, bean.id, true, {
                                         fileName: "[project]/frontend/app/profile/page.jsx",
-                                        lineNumber: 134,
+                                        lineNumber: 157,
                                         columnNumber: 19
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/frontend/app/profile/page.jsx",
-                                lineNumber: 124,
+                                lineNumber: 147,
                                 columnNumber: 13
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/frontend/app/profile/page.jsx",
-                        lineNumber: 85,
+                        lineNumber: 108,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/frontend/app/profile/page.jsx",
-                lineNumber: 63,
+                lineNumber: 86,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/frontend/app/profile/page.jsx",
-        lineNumber: 53,
+        lineNumber: 76,
         columnNumber: 5
     }, this);
 }

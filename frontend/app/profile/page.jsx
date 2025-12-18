@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import styles from "./profile.module.css"
+import axios from "axios"
 
 export default function Profile() {
   const [activeTab, setActiveTab] = useState("myBeans")
@@ -10,24 +11,104 @@ export default function Profile() {
   const [favoriteBeans, setFavoriteBeans] = useState([])
   const [currentUser, setCurrentUser] = useState(null)
 
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("currentUser") || "null")
-    if (!user) {
-      alert("로그인이 필요합니다.")
-      window.location.href = "/login"
-      return
+  const apiBase =
+    (process.env.NEXT_PUBLIC_API_BASE_URL || "http://127.0.0.1:8000").replace(
+      /\/$/,
+      ""
+    )
+
+  const safeParse = (value, fallback) => {
+    try {
+      if (value === null || value === undefined) return fallback
+      return JSON.parse(value)
+    } catch {
+      return fallback
     }
-    setCurrentUser(user)
+  }
 
-    const beans = JSON.parse(localStorage.getItem("beans") || "[]")
-    setMyBeans(beans)
+  const mapCoffeeToBean = (item) => ({
+    id: item.id,
+    beanName: item.name,
+    origin: item.country,
+    region: item.region,
+    roastLevel: item.roast_level,
+    weight: item.weight_grams ? `${item.weight_grams}g` : "",
+    price: item.price_krw?.toString() ?? "",
+    description: item.description,
+    image: item.image_url || item.image,
+    createdBy: item.user_id || item.owner_id || item.created_by || item.author_id || item.creator_id,
+    createdByEmail: item.user_email || item.email || item.creator_email,
+    createdByNickname: item.user_nickname || item.nickname || item.creator_nickname,
+  })
 
-    const favoriteIds = JSON.parse(localStorage.getItem("favorites") || "[]")
-    setFavorites(favoriteIds)
+  const isMine = (bean, user) => {
+    if (!bean || !user) return false
+    const userIds = [user.id, user.user_id].filter(Boolean)
+    const emails = [user.email, user.user_email].filter(Boolean)
+    const nicknames = [user.nickname, user.user_nickname].filter(Boolean)
 
-    const favBeans = beans.filter((bean) => favoriteIds.includes(bean.id))
-    setFavoriteBeans(favBeans)
-  }, [])
+    const beanIds = [bean.createdBy].filter(Boolean)
+    const beanEmails = [bean.createdByEmail].filter(Boolean)
+    const beanNicknames = [bean.createdByNickname].filter(Boolean)
+
+    if (userIds.length && beanIds.length && beanIds.some((id) => userIds.includes(id))) return true
+    if (emails.length && beanEmails.length && beanEmails.some((em) => emails.includes(em))) return true
+    if (nicknames.length && beanNicknames.length && beanNicknames.some((nk) => nicknames.includes(nk))) return true
+    return false
+  }
+
+  const dedupById = (list) => {
+    const seen = new Set()
+    const result = []
+    for (const item of list) {
+      if (!item || seen.has(item.id)) continue
+      seen.add(item.id)
+      result.push(item)
+    }
+    return result
+  }
+
+  useEffect(() => {
+    const init = async () => {
+      const user = safeParse(localStorage.getItem("currentUser"), null)
+      if (!user) {
+        alert("로그인이 필요합니다.")
+        window.location.href = "/login"
+        return
+      }
+      setCurrentUser(user)
+
+      const favoriteIds = safeParse(localStorage.getItem("favorites"), [])
+      setFavorites(favoriteIds)
+
+      const localBeans = safeParse(localStorage.getItem("beans"), [])
+      const localMyBeans = safeParse(localStorage.getItem("myBeans"), [])
+
+      try {
+        const token = localStorage.getItem("token")
+        const headers = token ? { Authorization: `Bearer ${token}` } : {}
+        const { data } = await axios.get(`${apiBase}/api/coffee/`, { headers })
+        const mapped = Array.isArray(data) ? data.map(mapCoffeeToBean) : []
+
+        const combined = dedupById([...mapped, ...localBeans, ...localMyBeans])
+        const mine = combined.filter(
+          (bean) => isMine(bean, user) || localMyBeans.find((b) => b.id === bean.id)
+        )
+
+        setMyBeans(mine)
+        setFavoriteBeans(combined.filter((b) => favoriteIds.includes(b.id)))
+      } catch {
+        const combined = dedupById([...localBeans, ...localMyBeans])
+        const mine = combined.filter(
+          (bean) => isMine(bean, user) || localMyBeans.find((b) => b.id === bean.id)
+        )
+        setMyBeans(mine)
+        setFavoriteBeans(combined.filter((bean) => favoriteIds.includes(bean.id)))
+      }
+    }
+
+    init()
+  }, [apiBase])
 
   const deleteBean = (beanId) => {
     if (confirm("정말 삭제하시겠습니까?")) {

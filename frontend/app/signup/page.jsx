@@ -2,15 +2,30 @@
 
 import { useState } from "react"
 import styles from "./signup.module.css"
+import axios from "axios"
 
 export default function Signup() {
   const [formData, setFormData] = useState({
-    name: "",
+    nickname: "",
     email: "",
     password: "",
     confirmPassword: "",
     agreed: false,
   })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  // API 엔드포인트 설정 (기본: http://127.0.0.1:8000 + /api/auth/signup)
+  const apiBase =
+    (process.env.NEXT_PUBLIC_API_BASE_URL || "http://127.0.0.1:8000").replace(
+      /\/$/,
+      ""
+    )
+  const signupPath =
+    (process.env.NEXT_PUBLIC_SIGNUP_PATH || "/api/auth/register").replace(
+      /^\/?/,
+      "/"
+    )
+  const signupUrl = `${apiBase}${signupPath}`
 
   const handleInputChange = (e) => {
     const { id, value, type, checked } = e.target
@@ -20,7 +35,7 @@ export default function Signup() {
     }))
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
 
     if (formData.password !== formData.confirmPassword) {
@@ -33,20 +48,22 @@ export default function Signup() {
       return
     }
 
-    // localStorage에 사용자 정보 저장
-    const users = JSON.parse(localStorage.getItem("users") || "[]")
-    const newUser = {
-      id: Date.now(),
-      name: formData.name,
-      email: formData.email,
-      password: formData.password,
-      createdAt: new Date().toISOString(),
+    try {
+      setIsSubmitting(true)
+      await axios.post(signupUrl, {
+        email: formData.email,
+        password: formData.password,
+        nickname: formData.nickname,
+      })
+      alert("회원가입이 완료되었습니다!")
+      window.location.href = "/login"
+    } catch (error) {
+      const message =
+        error?.response?.data?.message || "회원가입에 실패했습니다."
+      alert(message)
+    } finally {
+      setIsSubmitting(false)
     }
-    users.push(newUser)
-    localStorage.setItem("users", JSON.stringify(users))
-
-    alert("회원가입이 완료되었습니다!")
-    window.location.href = "/login"
   }
 
   return (
@@ -70,15 +87,15 @@ export default function Signup() {
 
           <form className={styles.form} onSubmit={handleSubmit}>
             <div className={styles.inputGroup}>
-              <label htmlFor="name" className={styles.label}>
-                이름
+              <label htmlFor="nickname" className={styles.label}>
+                닉네임
               </label>
               <input
                 type="text"
-                id="name"
+                id="nickname"
                 className={styles.input}
-                placeholder="홍길동"
-                value={formData.name}
+                placeholder="닉네임을 입력하세요"
+                value={formData.nickname}
                 onChange={handleInputChange}
                 required
               />
@@ -143,8 +160,8 @@ export default function Signup() {
               </label>
             </div>
 
-            <button type="submit" className={styles.submitButton}>
-              가입하기
+            <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
+              {isSubmitting ? "가입 중..." : "가입하기"}
             </button>
           </form>
 

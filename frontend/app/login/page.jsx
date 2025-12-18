@@ -1,39 +1,55 @@
-"use client"
+"use client";
 
-// 아니 이거 page.jsx인데 왜 use client 사용중? page.client.tsx로 나눠야지
-
-import { useState } from "react"
-import styles from "./login.module.css"
+import { useState } from "react";
+import styles from "./login.module.css";
+import axios from "axios";
 
 export default function Login() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-  })
+  });
 
+  // ✅ input 값 변경 전용
   const handleInputChange = (e) => {
-    const { id, value } = e.target
+    const { id, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [id]: value,
-    }))
-  }
+    }));
+  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
+  // ✅ 로그인 요청 전용 (Express API)
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    const users = JSON.parse(localStorage.getItem("users") || "[]")
-    const user = users.find((u) => u.email === formData.email && u.password === formData.password)
+    try {
+      const { data } = await axios.post("http://127.0.0.1:8000/api/auth/login", {
+        email: formData.email,
+        password: formData.password,
+      });
 
-    if (user) {
-      // 로그인 성공 - currentUser에 저장
-      localStorage.setItem("currentUser", JSON.stringify({ id: user.id, name: user.name, email: user.email }))
-      alert("로그인 성공!")
-      window.location.href = "/"
-    } else {
-      alert("이메일 또는 비밀번호가 일치하지 않습니다.")
+      // 로그인 성공: 응답 형태가 달라도 안전하게 저장
+      const token = data?.token || data?.access_token || data?.jwt;
+      const userPayload =
+        data?.user ||
+        data?.data?.user ||
+        (data?.email || data?.nickname
+          ? { email: data.email, nickname: data.nickname }
+          : { email: formData.email });
+
+      if (token) {
+        localStorage.setItem("token", token);
+      }
+      localStorage.setItem("currentUser", JSON.stringify(userPayload));
+
+      alert("로그인 성공!");
+      window.location.href = "/";
+    } catch (err) {
+      const msg = err.response?.data?.message || "로그인 실패";
+      alert(msg);
     }
-  }
+  };
 
   return (
     <div className={styles.container}>
@@ -53,6 +69,7 @@ export default function Login() {
           <h1 className={styles.title}>로그인</h1>
           <p className={styles.subtitle}>원두 거래를 시작하세요</p>
 
+          {/* ✅ form submit에서만 로그인 */}
           <form className={styles.form} onSubmit={handleSubmit}>
             <div className={styles.inputGroup}>
               <label htmlFor="email" className={styles.label}>
@@ -84,16 +101,6 @@ export default function Login() {
               />
             </div>
 
-            {/* <div className={styles.options}>
-              <label className={styles.checkboxLabel}>
-                <input type="checkbox" className={styles.checkbox} />
-                <span>로그인 상태 유지</span>
-              </label>
-              <a href="#" className={styles.forgotPassword}>
-                비밀번호 찾기
-              </a>
-            </div> */}
-
             <button type="submit" className={styles.submitButton}>
               로그인
             </button>
@@ -112,5 +119,5 @@ export default function Login() {
         </div>
       </div>
     </div>
-  )
+  );
 }

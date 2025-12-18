@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
+import axios from "axios"
 import styles from "./bean-detail.module.css"
 
 export default function BeanDetail() {
@@ -11,17 +12,64 @@ export default function BeanDetail() {
   const [newReview, setNewReview] = useState({ rating: 5, comment: "" })
   const [isFavorite, setIsFavorite] = useState(false)
 
+  const apiBase =
+    (process.env.NEXT_PUBLIC_API_BASE_URL || "http://127.0.0.1:8000").replace(
+      /\/$/,
+      ""
+    )
+
+  const normalizeBean = (data) =>
+    data && {
+      ...data,
+      beanName: data.beanName || data.name,
+      origin: data.origin || data.country,
+      roastLevel: data.roastLevel || data.roast_level,
+      weight: data.weight || (data.weight_grams ? `${data.weight_grams}g` : data.weight),
+      price: data.price || data.price_krw?.toString() || data.price_krw,
+      image:
+        data.image && (data.image.startsWith("http://") || data.image.startsWith("https://"))
+          ? data.image
+          : data.image_url && (data.image_url.startsWith("http://") || data.image_url.startsWith("https://"))
+            ? data.image_url
+            : data.image || data.image_url
+              ? `${apiBase}${(data.image || data.image_url).startsWith("/") ? "" : "/"}${data.image || data.image_url}`
+              : undefined,
+    }
+
   useEffect(() => {
-    const beans = JSON.parse(localStorage.getItem("beans") || "[]")
-    const foundBean = beans.find((b) => b.id === Number.parseInt(params.id))
-    setBean(foundBean)
+    const fetchData = async () => {
+      const idNum = Number.parseInt(params.id)
 
-    const storedReviews = JSON.parse(localStorage.getItem(`reviews_${params.id}`) || "[]")
-    setReviews(storedReviews)
+      // 즐겨찾기 로컬 상태
+      const favorites = JSON.parse(localStorage.getItem("favorites") || "[]")
+      setIsFavorite(favorites.includes(idNum))
 
-    const favorites = JSON.parse(localStorage.getItem("favorites") || "[]")
-    setIsFavorite(favorites.includes(Number.parseInt(params.id)))
-  }, [params.id])
+      // Bean 조회 (백엔드 우선, 실패 시 로컬)
+      try {
+        const { data } = await axios.get(`${apiBase}/api/coffee/${params.id}`)
+        setBean(normalizeBean(data))
+      } catch {
+        const beans = JSON.parse(localStorage.getItem("beans") || "[]")
+        const foundBean = beans.find((b) => b.id === idNum)
+        setBean(normalizeBean(foundBean) || null)
+      }
+
+      // 리뷰 조회 (백엔드 우선, 실패 시 로컬)
+      try {
+        const { data } = await axios.get(
+          `${apiBase}/api/coffee/${params.id}/reviews`
+        )
+        setReviews(Array.isArray(data) ? data : [])
+      } catch {
+        const storedReviews = JSON.parse(
+          localStorage.getItem(`reviews_${params.id}`) || "[]"
+        )
+        setReviews(storedReviews)
+      }
+    }
+
+    fetchData()
+  }, [params.id, apiBase])
 
   const toggleFavorite = () => {
     const favorites = JSON.parse(localStorage.getItem("favorites") || "[]")
@@ -40,18 +88,45 @@ export default function BeanDetail() {
     alert("장바구니에 추가되었습니다!")
   }
 
-  const submitReview = (e) => {
+  const submitReview = async (e) => {
     e.preventDefault()
-    const review = {
-      id: Date.now(),
-      ...newReview,
-      date: new Date().toISOString(),
-      author: "사용자",
+    const reviewPayload = {
+      rating: newReview.rating,
+      comment: newReview.comment,
     }
-    const updatedReviews = [review, ...reviews]
-    setReviews(updatedReviews)
-    localStorage.setItem(`reviews_${params.id}`, JSON.stringify(updatedReviews))
-    setNewReview({ rating: 5, comment: "" })
+
+    try {
+      const token = localStorage.getItem("token")
+      const headers = token ? { Authorization: `Bearer ${token}` } : {}
+      const { data } = await axios.post(
+        `${apiBase}/api/coffee/${params.id}/reviews`,
+        reviewPayload,
+        { headers }
+      )
+      // 백엔드 응답이 리뷰 객체를 돌려준다고 가정
+      const created = data || {
+        id: Date.now(),
+        ...reviewPayload,
+        date: new Date().toISOString(),
+        author: "사용자",
+      }
+      const updatedReviews = [created, ...reviews]
+      setReviews(updatedReviews)
+      localStorage.setItem(`reviews_${params.id}`, JSON.stringify(updatedReviews))
+      setNewReview({ rating: 5, comment: "" })
+    } catch {
+      // 실패 시 로컬에만 저장
+      const fallback = {
+        id: Date.now(),
+        ...reviewPayload,
+        date: new Date().toISOString(),
+        author: "사용자",
+      }
+      const updatedReviews = [fallback, ...reviews]
+      setReviews(updatedReviews)
+      localStorage.setItem(`reviews_${params.id}`, JSON.stringify(updatedReviews))
+      setNewReview({ rating: 5, comment: "" })
+    }
   }
 
   if (!bean) {
