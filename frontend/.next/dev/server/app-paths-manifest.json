@@ -1,4 +1,7 @@
 {
+  "/login/page": "app/login/page.js",
   "/page": "app/page.js",
-  "/recommendation/result/page": "app/recommendation/result/page.js"
+  "/profile/page": "app/profile/page.js",
+  "/recommendation/result/page": "app/recommendation/result/page.js",
+  "/register-bean/page": "app/register-bean/page.js"
 }

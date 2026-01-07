@@ -696,11 +696,12 @@ def recommend(
     db: Session = Depends(get_db),
 ):
     """
-    1) flavor_notes == cupnote 로 후보 선택
-    2) (acid,sweet,body)와 목표값의 가중 유클리드 거리로 정렬
-    3) CoffeeOut 리스트 반환 (id만 원하면 아래에서 ids만 뽑아서 반환해도 됨)
+    1) flavor_notes == cupnote 로 우선 선택 (있는 경우)
+    2) 없으면 모든 커피에서 (acid,sweet,body)와 목표값의 가중 유클리드 거리로 정렬
+    3) CoffeeOut 리스트 반환
     """
-    sql = f"""
+    # First, try to find coffees with matching flavor_notes
+    sql_with_notes = f"""
         SELECT
             *,
             (
@@ -724,7 +725,33 @@ def recommend(
         "offset": offset,
     }
 
-    rows = db.execute(text(sql), params).mappings().all()
+    rows = db.execute(text(sql_with_notes), params).mappings().all()
+
+    # If no results with flavor_notes match, fall back to all coffees based on taste profile
+    if not rows:
+        sql_fallback = f"""
+            SELECT
+                *,
+                (
+                  {w_acid}  * POW(acid  - :acid,  2) +
+                  {w_sweet} * POW(sweet - :sweet, 2) +
+                  {w_body}  * POW(body  - :body,  2)
+                ) AS dist2
+            FROM coffee
+            WHERE acid IS NOT NULL AND sweet IS NOT NULL AND body IS NOT NULL
+            ORDER BY dist2 ASC, created_at DESC
+            LIMIT :limit OFFSET :offset
+        """
+
+        fallback_params = {
+            "acid": payload.acid,
+            "sweet": payload.sweet,
+            "body": payload.body,
+            "limit": limit,
+            "offset": offset,
+        }
+
+        rows = db.execute(text(sql_fallback), fallback_params).mappings().all()
 
     out: list[CoffeeOut] = []
     for r in rows:

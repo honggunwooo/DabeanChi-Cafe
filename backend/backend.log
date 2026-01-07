@@ -1,0 +1,54 @@
+INFO:     Will watch for changes in these directories: ['/Users/honggunwoo/Desktop/포폴/Dabeanchi Cafe/backend']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [49797] using WatchFiles
+INFO:     Started server process [49829]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:60730 - "POST /api/coffee/recommend HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60862 - "GET /api/coffee/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60865 - "GET /static/uploads/49cd34f4d4d54d849e0418f345c9b4d0.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60863 - "GET /static/uploads/a27595acc11b4c0683f7a85335ebd87d.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60866 - "GET /static/uploads/106d0baab6b146d3a40d4f51451967ba.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60864 - "GET /static/uploads/6b0a3f79a8e64f1cab62cd120b751a86.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60862 - "GET /api/coffee/options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60867 - "GET /api/coffee/options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60867 - "OPTIONS /api/coffee/recommend HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60862 - "POST /api/coffee/recommend HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60862 - "GET /api/coffee/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60867 - "GET /api/coffee/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60897 - "GET /static/uploads/a27595acc11b4c0683f7a85335ebd87d.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60898 - "GET /static/uploads/6b0a3f79a8e64f1cab62cd120b751a86.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60899 - "GET /static/uploads/49cd34f4d4d54d849e0418f345c9b4d0.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60900 - "GET /static/uploads/106d0baab6b146d3a40d4f51451967ba.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60862 - "GET /api/coffee/options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60867 - "GET /api/coffee/options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60925 - "OPTIONS /api/coffee/recommend HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60925 - "POST /api/coffee/recommend HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60926 - "GET /api/coffee/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61068 - "GET /api/coffee/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61069 - "GET /static/uploads/a27595acc11b4c0683f7a85335ebd87d.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61071 - "GET /static/uploads/6b0a3f79a8e64f1cab62cd120b751a86.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61070 - "GET /static/uploads/49cd34f4d4d54d849e0418f345c9b4d0.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61072 - "GET /static/uploads/106d0baab6b146d3a40d4f51451967ba.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61068 - "GET /api/coffee/options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60926 - "GET /api/coffee/options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61809 - "OPTIONS /api/coffee/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61809 - "GET /api/coffee/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61810 - "GET /static/uploads/a27595acc11b4c0683f7a85335ebd87d.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61811 - "GET /static/uploads/6b0a3f79a8e64f1cab62cd120b751a86.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61812 - "GET /static/uploads/49cd34f4d4d54d849e0418f345c9b4d0.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61813 - "GET /static/uploads/106d0baab6b146d3a40d4f51451967ba.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61809 - "GET /api/coffee/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61830 - "GET /static/uploads/49cd34f4d4d54d849e0418f345c9b4d0.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61831 - "GET /static/uploads/106d0baab6b146d3a40d4f51451967ba.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61829 - "GET /static/uploads/6b0a3f79a8e64f1cab62cd120b751a86.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61828 - "GET /static/uploads/a27595acc11b4c0683f7a85335ebd87d.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61832 - "GET /api/coffee/options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61809 - "GET /api/coffee/options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60061 - "GET /api/coffee/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60066 - "GET /static/uploads/106d0baab6b146d3a40d4f51451967ba.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60065 - "GET /static/uploads/49cd34f4d4d54d849e0418f345c9b4d0.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60067 - "GET /static/uploads/6b0a3f79a8e64f1cab62cd120b751a86.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60064 - "GET /static/uploads/a27595acc11b4c0683f7a85335ebd87d.jpeg HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60061 - "GET /api/coffee/options HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60068 - "GET /api/coffee/options HTTP/1.1" 200 OK
